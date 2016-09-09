@@ -1,6 +1,6 @@
 {
   "name": "async-array-class",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A class that extends the Array adding async methods",
   "main": "index.js",
   "scripts": {
