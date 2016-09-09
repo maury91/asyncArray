@@ -1,0 +1,29 @@
+{
+  "name": "async-array-class",
+  "version": "1.0.0",
+  "description": "A class that extends the Array adding async methods",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maury91/asyncArray.git"
+  },
+  "keywords": [
+    "async",
+    "array"
+  ],
+  "author": "Maurizio Carboni",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/maury91/asyncArray/issues"
+  },
+  "homepage": "https://github.com/maury91/asyncArray#readme",
+  "devDependencies": {
+    "eslint": "^3.4.0",
+    "eslint-config-standard": "^6.0.0",
+    "eslint-plugin-promise": "^2.0.1",
+    "eslint-plugin-standard": "^2.0.0"
+  }
+}
