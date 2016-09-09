@@ -60,4 +60,4 @@ const isAppUpdated = await asyncListOfDependecies.every(isDependenciesUpdated)
 
 ## Example
 
-http://jsbin.com/sixibupava/edit?js,console
+https://tonicdev.com/57d2c47fed77c81400edf390/57d2c82b240ab2140080cfe9
