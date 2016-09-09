@@ -14,10 +14,28 @@
     root.AsyncArray = factory()
   }
 }(this, function () {
-  // The main class
-  return class AsyncArray extends Array {
+  // Private functions
+  function reduce (data, callback, initialValue) {
+    // Return a promise
+    return new Promise((resolve, reject) => {
+      // Initialize the index
+      let i = 0
+      const _reduce = (currentValue) => {
+        // If we have finish to reduce, resolve with the last value computed
+        if (data.length === 0) {
+          resolve(currentValue)
+        }
+        // Extract a value from the copied array
+        const value = data.shift()
+        // Call the function
+        callback(currentValue, value, i++, this).then(_reduce, reject)
+      }
+      _reduce(initialValue)
+    })
+  }
 
-    transformToAsyncParallel (callback, method) {
+  function transformToAsyncParallel (method) {
+    return function (callback) {
       // Take a copy of the array, it might mutate by the time we've finished
       const data = this.constructor.from(this)
       // Transform all the elements into an array of promises using the predicate
@@ -28,49 +46,27 @@
         })
       })
     }
+  }
+
+  // The main class
+  class AsyncArray extends Array {
 
     reduceAsync (callback, initialValue) {
       // Take a copy of the array, it might mutate by the time we've finished
       const data = Array.from(this)
-      // Return a promise
-      return new Promise((resolve, reject) => {
-        // Initialize the index
-        let i = 0
-        const _reduce = (currentValue) => {
-          // If we have finish to reduce, resolve with the last value computed
-          if (data.length === 0) {
-            resolve(currentValue)
-          }
-          // Extract a value from the copied array
-          const value = data.shift()
-          // Call the function
-          callback(currentValue, value, i++, this).then(_reduce, reject)
-        }
-        _reduce(initialValue)
-      })
+      return reduce(data, callback, initialValue)
     }
 
     reduceRightAsync (callback, initialValue) {
       // Take a copy of the array, it might mutate by the time we've finished
       const data = Array.from(this).reverse()
-      return new Promise((resolve, reject) => {
-        let i = 0
-        const _reduce = (currentValue) => {
-          if (data.length === 0) {
-            resolve(currentValue)
-          }
-          const value = data.shift()
-          callback(currentValue, value, i++, this).then(_reduce, reject)
-        }
-        _reduce(initialValue)
-      })
-    }
-
-    constructor (...args) {
-      super(...args)
-      for (const method of [ 'every', 'filter', 'find', 'findIndex', 'includes', 'some', 'map' ]) {
-        this[ `${method}Async` ] = (callback) => this.transformToAsyncParallel(callback, method)
-      }
+      return reduce(data, callback, initialValue)
     }
   }
+
+  for (const method of [ 'every', 'filter', 'find', 'findIndex', 'includes', 'some', 'map' ]) {
+    AsyncArray.prototype[ `${method}Async` ] = transformToAsyncParallel(method)
+  }
+
+  return AsyncArray
 }))
