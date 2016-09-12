@@ -60,4 +60,4 @@ const isAppUpdated = await asyncListOfDependecies.every(isDependenciesUpdated)
 
 ## Example
 
-http://jsbin.com/sixibupava/edit?js,console
+https://tonicdev.com/maury91/tonic-npm-async-array-class
